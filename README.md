@@ -1,3 +1,32 @@
+# NPR Community Config
+Hey so as you can see this is a forked repo of a forked repo thats because I made a custom config for the NPR app to run along with.
+
+Here is how you run it:
+
+Build from source:
+1. Install golang
+2. Clone this repository
+3. Build the application
+
+Download binary:
+1. Grab a binary from latest releases https://github.com/OpenSourceNPRCommunity/oauth2_proxy/releases
+
+How to run:
+1. You will have to have a domain to point to for the callback
+2. You will have to setup an NPR One Developer account to access their api: https://dev.npr.org/
+Please keep in mind when using this you only have 300 API calls per day!!!
+Also put this behind a reverse proxy and install letsencrypt... its super easy to do and ensures SSL/TLS for free!
+
+vars:
+- <random-cookie-secret> - create a random cookie seed that your cookies will be genereated from
+- <npr-client-id> - this is given to you by the NPR One Developer Center
+- <npr-client-secret> - this is given to you by the NPR One Developer Center
+- <callback-url> - this is the callback url that will be on whatever server you run this oath2_proxy
+	- example: https://npr.example.com/oauth2/callback
+```bash
+./oauth2_proxy --email-domain=* --cookie-secret="<random-cookie-secret>" --cookie-secure=true --provider=npr --client-id=<npr-client-id> --client-secret=<npr-client-secret> --redirect-url="<callback-url>" --cookie-refresh=10h0m0s --http-address="127.0.0.1:8000" --pass-access-token=true
+```
+
 oauth2_proxy
 =================
 
