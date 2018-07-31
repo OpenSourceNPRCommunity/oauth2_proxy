@@ -18,10 +18,10 @@ Please keep in mind when using this you only have 300 API calls per day!!!
 Also put this behind a reverse proxy and install letsencrypt... its super easy to do and ensures SSL/TLS for free!
 
 vars:
-- <random-cookie-secret> - create a random cookie seed that your cookies will be genereated from
-- <npr-client-id> - this is given to you by the NPR One Developer Center
-- <npr-client-secret> - this is given to you by the NPR One Developer Center
-- <callback-url> - this is the callback url that will be on whatever server you run this oath2_proxy
+- random-cookie-secret = create a random cookie seed that your cookies will be genereated from
+- npr-client-id = this is given to you by the NPR One Developer Center
+- npr-client-secret = this is given to you by the NPR One Developer Center
+- callback-url = this is the callback url that will be on whatever server you run this oath2_proxy
 	- example: https://npr.example.com/oauth2/callback
 ```bash
 ./oauth2_proxy --email-domain=* --cookie-secret="<random-cookie-secret>" --cookie-secure=true --provider=npr --client-id=<npr-client-id> --client-secret=<npr-client-secret> --redirect-url="<callback-url>" --cookie-refresh=10h0m0s --http-address="127.0.0.1:8000" --pass-access-token=true
