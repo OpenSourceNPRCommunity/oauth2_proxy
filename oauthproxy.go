@@ -370,6 +370,20 @@ func (p *OAuthProxy) ErrorPage(rw http.ResponseWriter, code int, title string, m
 	p.templates.ExecuteTemplate(rw, "error.html", t)
 }
 
+//a success error is returned when request. This is mainly used for Android, so
+//that on a success we can verify. There is no way right now to programmatically without
+//javascript to check for success, only failures. So we create a custom failure code to
+//check for.
+func (p *OAuthProxy) SuccessError418(rw http.ResponseWriter, req *http.Request) {
+	// serveMux.HandleFunc("/oauth2/success-418", func(rw http.ResponseWriter, r *http.Request) {
+	// 	log.Printf("Success-418 %d %s %s")
+	// 	rw.WriteHeader(418)
+	// 	rw.Write([]byte("Successfully Logged in!"))
+	// })
+	rw.WriteHeader(418)
+	rw.Write([]byte("Successfully Logged in!"))
+}
+
 func (p *OAuthProxy) SignInPage(rw http.ResponseWriter, req *http.Request, code int) {
 	p.ClearSessionCookie(rw, req)
 	rw.WriteHeader(code)
@@ -474,6 +488,8 @@ func (p *OAuthProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		p.OAuthCallback(rw, req)
 	case path == p.AuthOnlyPath:
 		p.AuthenticateOnly(rw, req)
+	case path == "/oauth2/success-418":
+		p.SuccessError418(rw, req)
 	default:
 		p.Proxy(rw, req)
 	}
