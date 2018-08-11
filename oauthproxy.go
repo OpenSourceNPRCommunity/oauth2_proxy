@@ -380,6 +380,14 @@ func (p *OAuthProxy) SuccessError418(rw http.ResponseWriter, req *http.Request) 
 	// 	rw.WriteHeader(418)
 	// 	rw.Write([]byte("Successfully Logged in!"))
 	// })
+	remoteAddr := getRemoteAddr(req)
+	session, _, err := p.LoadCookiedSession(req)
+	if err != nil {
+		log.Printf("%s %s", remoteAddr, err)
+		p.ErrorPage(rw, 500, "Internal Server error", fmt.Sprintf("Error loading cookie for 418: %s", err))
+		return
+	}
+	rw.Header().Set("X-Forwarded-Access-Token", session.AccessToken)
 	rw.WriteHeader(418)
 	rw.Write([]byte("Successfully Logged in!"))
 }
